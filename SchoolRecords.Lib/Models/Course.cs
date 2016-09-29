@@ -5,7 +5,7 @@ using System.Web;
 
 namespace SchoolRecords.Models
 {
-    public class CourseList
+    public class Course
     {
         public int ID { get; set; }
         public string Name { get; set; }

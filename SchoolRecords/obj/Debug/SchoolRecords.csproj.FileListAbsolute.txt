@@ -75,3 +75,5 @@ c:\users\brian\documents\visual studio 2015\Projects\SchoolRecords\SchoolRecords
 c:\users\brian\documents\visual studio 2015\Projects\SchoolRecords\SchoolRecords\obj\Debug\SchoolRecords.csprojResolveAssemblyReference.cache
 c:\users\brian\documents\visual studio 2015\Projects\SchoolRecords\SchoolRecords\obj\Debug\SchoolRecords.dll
 c:\users\brian\documents\visual studio 2015\Projects\SchoolRecords\SchoolRecords\obj\Debug\SchoolRecords.pdb
+c:\users\brian\documents\visual studio 2015\Projects\SchoolRecords\SchoolRecords\bin\SchoolRecords.Lib.dll
+c:\users\brian\documents\visual studio 2015\Projects\SchoolRecords\SchoolRecords\bin\SchoolRecords.Lib.pdb

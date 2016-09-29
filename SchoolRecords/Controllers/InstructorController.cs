@@ -1,4 +1,5 @@
-﻿using SchoolRecords.Models;
+﻿using SchoolRecords.Lib;
+using SchoolRecords.Models;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -15,32 +16,29 @@ namespace SchoolRecords.Controllers
     {
         [HttpGet]
         [Route("")]
-        public List<Instructor> GetInstructorList()
+        public IEnumerable<Instructor> GetInstructorList()
         {
-            var allInstructors = new List<Instructor>();
+            var instructors = new InstructorRepository();
+            var instructorList = instructors.Get();
+            return instructorList;
+        }
 
-            var connectionString = ("Server=localhost;Database=SchoolRecords;Trusted_Connection=True;");
-            var sql = "SELECT * FROM SchoolRecords..InstructorTBL";
+        [HttpPut]
+        [Route("{id}")]
+        public Instructor UpdateInstructor(int id, Instructor instructor)
+        {
+            var instructors = new InstructorRepository();
+            var updatedInstructor = instructors.Update(id, instructor);
+            return updatedInstructor;
+        }
 
-            using (var connection = new SqlConnection(connectionString))
-            using (var command = new SqlCommand(sql, connection))
-            {
-                command.CommandType = CommandType.Text;
-                connection.Open();
-
-                var reader = command.ExecuteReader();
-                while (reader.Read())
-                {
-                    var id = (int)reader["InstructorID"];
-                    var firstName = reader["FirstName"].ToString();
-                    var lastname = reader["LastName"].ToString();
-                    var email = reader["Email"].ToString();
-                    var instructor = new Instructor(id, firstName, lastname, email);
-                    allInstructors.Add(instructor);
-                }
-                connection.Close();
-            }
-            return allInstructors;
+        [HttpDelete]
+        [Route("{id}")]
+        public void DeleteInstructor(int id, Instructor instructor)
+        {
+            var instructors = new InstructorRepository();
+            instructors.Remove(id);
         }
     }
+
 }
