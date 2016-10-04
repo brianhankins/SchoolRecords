@@ -1,4 +1,5 @@
-﻿using SchoolRecords.Models;
+﻿using SchoolRecords.Lib;
+using SchoolRecords.Models;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -15,34 +16,37 @@ namespace SchoolRecords.Controllers
     {
         [HttpGet]
         [Route("")]
-        public List<Student> GetStudentList()
+        public IEnumerable<Student> GetStudentList()
         {
-            var allStudents = new List<Student>();
-
-            var connectionString = ("Server=localhost;Database=SchoolRecords;Trusted_Connection=True;");
-            var sql = "SELECT * FROM SchoolRecords..StudentTBL";
-
-            using (var connection = new SqlConnection(connectionString))
-            using (var command = new SqlCommand(sql, connection))
-            {
-                command.CommandType = CommandType.Text;
-                connection.Open();
-
-                var reader = command.ExecuteReader();
-                while (reader.Read())
-                {
-                    var id = (int)reader["StudentID"];
-                    var firstName = reader["FirstName"].ToString();
-                    var lastName = reader["LastName"].ToString();
-                    var email = reader["Email"].ToString();
-                    var student = new Student(id, firstName, lastName, email);
-                    allStudents.Add(student);
-                }
-                connection.Close();
-            }
-
-            return allStudents;
+            var students = new StudentRepository();
+            var studentList = students.Get();
+            return studentList;
         }
 
+        [HttpPost]
+        [Route("")]
+        public Student AddStudent(Student student)
+        {
+            var students = new StudentRepository();
+            var newStudent = students.Add(student);
+            return newStudent;
+        }
+        
+        [HttpPut]
+        [Route("{id}")]
+        public Student UpdateStudent(int id, Student student)
+        {
+            var students = new StudentRepository();
+            var newStudent = students.Update(id, student);
+            return newStudent;
+        } 
+
+        [HttpDelete]
+        [Route("{id}")]
+        public void DeleteStudent(int id, Student student)
+        {
+            var students = new StudentRepository();
+            students.Remove(id);
+        }
     }
 }

@@ -79,7 +79,7 @@ namespace SchoolRecords.Lib
         {
             var connectionString = ("Server=localhost;Database=SchoolRecords;Trusted_Connection=True;");
             var sql = @"INSERT INTO SchoolRecords..InstructorTBL(FirstName, LastName, Email) 
-                VALUE(@firstName, @lastName, @email)";
+                VALUES(@firstName, @lastName, @email)";
 
             using (var connection = new SqlConnection(connectionString))
             using (var command = new SqlCommand(sql, connection))

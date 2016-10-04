@@ -9,19 +9,19 @@ using System.Threading.Tasks;
 
 namespace SchoolRecords.Lib
 {
-    public class InstructorRepository
+    public class CourseRepository
     {
-        public InstructorRepository()
+        public CourseRepository()
         {
 
         }
 
-        public IEnumerable<Instructor> Get()
+        public IEnumerable<Course> Get()
         {
-            var allInstructors = new List<Instructor>();
+            var allcourses = new List<Course>();
 
             var connectionString = ("Server=localhost;Database=SchoolRecords;Trusted_Connection=True;");
-            var sql = "SELECT Id, FirstName, LastName, Email FROM SchoolRecords..InstructorTBL";
+            var sql = "SELECT Id, CourseName, CourseHours FROM SchoolRecords..CourseListTBL";
 
             using (var connection = new SqlConnection(connectionString))
             using (var command = new SqlCommand(sql, connection))
@@ -33,24 +33,23 @@ namespace SchoolRecords.Lib
                 while (reader.Read())
                 {
                     var id = (int)reader["Id"];
-                    var firstName = reader["FirstName"].ToString();
-                    var lastname = reader["LastName"].ToString();
-                    var email = reader["Email"].ToString();
-                    var instructor = new Instructor(id, firstName, lastname, email);
-                    allInstructors.Add(instructor);
+                    var name = reader["CourseName"].ToString();
+                    var hours = reader["CourseHours"].ToString();
+                    var course = new Course(id, name, hours);
+                    allcourses.Add(course);
                 }
                 connection.Close();
             }
-            return allInstructors;
+            return allcourses;
         }
 
-        public IEnumerable<Instructor> Get(Instructor instructor)
+        public IEnumerable<Course> Get(Course course)
         {
 
-            var allInstructors = new List<Instructor>();
+            var allCourses = new List<Course>();
 
             var connectionString = ("Server=localhost;Database=SchoolRecords;Trusted_Connection=True;");
-            var sql = "SELECT Id, FirstName, LastName, Email FROM SchoolRecords..InstructorTBL";
+            var sql = "SELECT Id, CourseName, CourseHours FROM SchoolRecords..CourseListTBL";
 
             using (var connection = new SqlConnection(connectionString))
             using (var command = new SqlCommand(sql, connection))
@@ -62,24 +61,21 @@ namespace SchoolRecords.Lib
                 while (reader.Read())
                 {
                     var id = (int)reader["Id"];
-                    var firstName = reader["FirstName"].ToString();
-                    var lastname = reader["LastName"].ToString();
-                    var email = reader["email"].ToString();
-                    var singleInstructor = new Instructor(id, firstName, lastname, email);
-                    allInstructors.Add(singleInstructor);
+                    var name = reader["CourseName"].ToString();
+                    var hours = reader["CourseHours"].ToString();
+                    var singleCourse = new Course(id, name, hours);
+                    allCourses.Add(singleCourse);
                 }
                 connection.Close();
             }
-            return allInstructors;
+            return allCourses;
         }
 
-
-
-        public Instructor Add(Instructor instructor)
+        public Course Add(Course course)
         {
             var connectionString = ("Server=localhost;Database=SchoolRecords;Trusted_Connection=True;");
-            var sql = @"INSERT INTO SchoolRecords..InstructorTBL(FirstName, LastName, Email) 
-                VALUE(@firstName, @lastName, @email)";
+            var sql = @"INSERT INTO SchoolRecords..CourseListTBL(CourseName, CreditHours) 
+                VALUES(@name, @hours)";
 
             using (var connection = new SqlConnection(connectionString))
             using (var command = new SqlCommand(sql, connection))
@@ -87,22 +83,21 @@ namespace SchoolRecords.Lib
                 command.CommandType = CommandType.Text;
                 connection.Open();
 
-                command.Parameters.AddWithValue("firstName", instructor.FirstName);
-                command.Parameters.AddWithValue("lastName", instructor.LastName);
-                command.Parameters.AddWithValue("email", instructor.Email);
+                command.Parameters.AddWithValue("name", course.Name);
+                command.Parameters.AddWithValue("hours", course.Hours);
 
                 command.ExecuteNonQuery();
 
                 connection.Close();
             }
-            return instructor;
+            return course;
         }
 
-        public Instructor Update(int id, Instructor instructor)
+        public Course Update(int id, Course course)
         {
             var connectionString = ("Server=localhost;Database=SchoolRecords;Trusted_Connection=True;");
-            var sql = @"UPDATE SchoolRecords..InstructorTBL 
-                SET FirstName = @firstName, LastName = @lastName, Email = @email
+            var sql = @"UPDATE SchoolRecords..CourseListTBL 
+                SET CourseName = @name, CourseHours = @hours
                 WHERE ID = @id";
 
             using (var connection = new SqlConnection(connectionString))
@@ -112,22 +107,21 @@ namespace SchoolRecords.Lib
                 connection.Open();
 
                 command.Parameters.AddWithValue("id", id);
-                command.Parameters.AddWithValue("firstName", instructor.FirstName);
-                command.Parameters.AddWithValue("lastName", instructor.LastName);
-                command.Parameters.AddWithValue("email", instructor.Email);
+                command.Parameters.AddWithValue("name", course.Name);
+                command.Parameters.AddWithValue("hours", course.Hours);
 
                 command.ExecuteNonQuery();
 
                 connection.Close();
             }
-            return instructor;
+            return course;
         }
 
 
         public void Remove(int id)
         {
             var connectionString = ("Server=localhost;Database=SchoolRecords;Trusted_Connection=True;");
-            var sql = @"DELETE SchoolRecords..InstructorTBL WHERE ID = @id";
+            var sql = @"DELETE SchoolRecords..CourseListTBL WHERE ID = @id";
 
             using (var connection = new SqlConnection(connectionString))
             using (var command = new SqlCommand(sql, connection))

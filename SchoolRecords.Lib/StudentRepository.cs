@@ -18,10 +18,10 @@ namespace SchoolRecords.Lib
 
         public IEnumerable<Student> Get()
         {
-            var allInstructors = new List<Student>();
+            var allStudents = new List<Student>();
 
             var connectionString = ("Server=localhost;Database=SchoolRecords;Trusted_Connection=True;");
-            var sql = "SELECT Id, FirstName, LastName, Email FROM SchoolRecords..InstructorTBL";
+            var sql = "SELECT Id, FirstName, LastName, Email FROM SchoolRecords..StudentTBL";
 
             using (var connection = new SqlConnection(connectionString))
             using (var command = new SqlCommand(sql, connection))
@@ -37,11 +37,11 @@ namespace SchoolRecords.Lib
                     var lastname = reader["LastName"].ToString();
                     var email = reader["Email"].ToString();
                     var student = new Student(id, firstName, lastname, email);
-                    allInstructors.Add(student);
+                    allStudents.Add(student);
                 }
                 connection.Close();
             }
-            return allInstructors;
+            return allStudents;
         }
 
         public IEnumerable<Student> Get(Student student)
@@ -50,7 +50,7 @@ namespace SchoolRecords.Lib
             var allStudents = new List<Student>();
 
             var connectionString = ("Server=localhost;Database=SchoolRecords;Trusted_Connection=True;");
-            var sql = "SELECT Id, FirstName, LastName, Email FROM SchoolRecords..InstructorTBL";
+            var sql = "SELECT Id, FirstName, LastName, Email FROM SchoolRecords..StudentTBL";
 
             using (var connection = new SqlConnection(connectionString))
             using (var command = new SqlCommand(sql, connection))
@@ -76,8 +76,8 @@ namespace SchoolRecords.Lib
         public Student Add(Student student)
         {
             var connectionString = ("Server=localhost;Database=SchoolRecords;Trusted_Connection=True;");
-            var sql = @"INSERT INTO SchoolRecords..InstructorTBL(FirstName, LastName, Email) 
-                VALUE(@firstName, @lastName, @email)";
+            var sql = @"INSERT INTO SchoolRecords..StudentTBL(FirstName, LastName, Email) 
+                VALUES(@firstName, @lastName, @email)";
 
             using (var connection = new SqlConnection(connectionString))
             using (var command = new SqlCommand(sql, connection))
@@ -99,7 +99,7 @@ namespace SchoolRecords.Lib
         public Student Update(int id, Student student)
         {
             var connectionString = ("Server=localhost;Database=SchoolRecords;Trusted_Connection=True;");
-            var sql = @"UPDATE SchoolRecords..InstructorTBL 
+            var sql = @"UPDATE SchoolRecords..StudentTBL 
                 SET FirstName = @firstName, LastName = @lastName, Email = @email
                 WHERE ID = @id";
 

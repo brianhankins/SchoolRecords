@@ -23,6 +23,15 @@ namespace SchoolRecords.Controllers
             return instructorList;
         }
 
+        [HttpPost]
+        [Route("")]
+        public Instructor AddInstructor(Instructor instructor)
+        {
+            var instructors = new InstructorRepository();
+            var newInstructor = instructors.Add(instructor);
+            return newInstructor;
+        }
+
         [HttpPut]
         [Route("{id}")]
         public Instructor UpdateInstructor(int id, Instructor instructor)
