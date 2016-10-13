@@ -1,0 +1,8 @@
+C:\Users\Brian\documents\visual studio 2015\Projects\SchoolRecords\SchoolApp\bin\Debug\SchoolApp.exe.config
+C:\Users\Brian\documents\visual studio 2015\Projects\SchoolRecords\SchoolApp\bin\Debug\SchoolApp.exe
+C:\Users\Brian\documents\visual studio 2015\Projects\SchoolRecords\SchoolApp\bin\Debug\SchoolApp.pdb
+C:\Users\Brian\documents\visual studio 2015\Projects\SchoolRecords\SchoolApp\bin\Debug\SchoolRecords.Lib.dll
+C:\Users\Brian\documents\visual studio 2015\Projects\SchoolRecords\SchoolApp\bin\Debug\SchoolRecords.Lib.pdb
+C:\Users\Brian\documents\visual studio 2015\Projects\SchoolRecords\SchoolApp\obj\Debug\SchoolApp.csprojResolveAssemblyReference.cache
+C:\Users\Brian\documents\visual studio 2015\Projects\SchoolRecords\SchoolApp\obj\Debug\SchoolApp.exe
+C:\Users\Brian\documents\visual studio 2015\Projects\SchoolRecords\SchoolApp\obj\Debug\SchoolApp.pdb

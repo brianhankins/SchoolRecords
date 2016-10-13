@@ -2,6 +2,7 @@
 using SchoolRecords.Models;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
@@ -14,12 +15,19 @@ namespace SchoolRecords.Controllers
     [RoutePrefix("api/instructors")]
     public class InstructorController : ApiController
     {
+        private InstructorRepository Instructors { get; }
+        public InstructorController()
+        {
+            var connectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+            Instructors = new InstructorRepository(connectionString);
+        }
+
+
         [HttpGet]
         [Route("")]
         public IEnumerable<Instructor> GetInstructorList()
         {
-            var instructors = new InstructorRepository();
-            var instructorList = instructors.Get();
+            var instructorList = Instructors.Get();
             return instructorList;
         }
 
@@ -27,8 +35,7 @@ namespace SchoolRecords.Controllers
         [Route("")]
         public Instructor AddInstructor(Instructor instructor)
         {
-            var instructors = new InstructorRepository();
-            var newInstructor = instructors.Add(instructor);
+            var newInstructor = Instructors.Add(instructor);
             return newInstructor;
         }
 
@@ -36,8 +43,7 @@ namespace SchoolRecords.Controllers
         [Route("{id}")]
         public Instructor UpdateInstructor(int id, Instructor instructor)
         {
-            var instructors = new InstructorRepository();
-            var updatedInstructor = instructors.Update(id, instructor);
+            var updatedInstructor = Instructors.Update(id, instructor);
             return updatedInstructor;
         }
 
@@ -45,8 +51,7 @@ namespace SchoolRecords.Controllers
         [Route("{id}")]
         public void DeleteInstructor(int id, Instructor instructor)
         {
-            var instructors = new InstructorRepository();
-            instructors.Remove(id);
+            Instructors.Remove(id);
         }
     }
 

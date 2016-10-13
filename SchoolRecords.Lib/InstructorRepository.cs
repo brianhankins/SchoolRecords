@@ -11,19 +11,19 @@ namespace SchoolRecords.Lib
 {
     public class InstructorRepository
     {
-        public InstructorRepository()
+        private string Connection { get; }
+        public InstructorRepository(string connection)
         {
-
+            Connection = connection;
         }
 
         public IEnumerable<Instructor> Get()
         {
             var allInstructors = new List<Instructor>();
 
-            var connectionString = ("Server=localhost;Database=SchoolRecords;Trusted_Connection=True;");
             var sql = "SELECT Id, FirstName, LastName, Email FROM SchoolRecords..InstructorTBL";
 
-            using (var connection = new SqlConnection(connectionString))
+            using (var connection = new SqlConnection(Connection))
             using (var command = new SqlCommand(sql, connection))
             {
                 command.CommandType = CommandType.Text;
@@ -47,12 +47,11 @@ namespace SchoolRecords.Lib
         public IEnumerable<Instructor> Get(Instructor instructor)
         {
 
-            var allInstructors = new List<Instructor>();
+            var singleInstructors = new List<Instructor>();
 
-            var connectionString = ("Server=localhost;Database=SchoolRecords;Trusted_Connection=True;");
             var sql = "SELECT Id, FirstName, LastName, Email FROM SchoolRecords..InstructorTBL";
 
-            using (var connection = new SqlConnection(connectionString))
+            using (var connection = new SqlConnection(Connection))
             using (var command = new SqlCommand(sql, connection))
             {
                 command.CommandType = CommandType.Text;
@@ -66,22 +65,20 @@ namespace SchoolRecords.Lib
                     var lastname = reader["LastName"].ToString();
                     var email = reader["email"].ToString();
                     var singleInstructor = new Instructor(id, firstName, lastname, email);
-                    allInstructors.Add(singleInstructor);
+                    singleInstructors.Add(singleInstructor);
                 }
                 connection.Close();
             }
-            return allInstructors;
+            return singleInstructors;
         }
-
 
 
         public Instructor Add(Instructor instructor)
         {
-            var connectionString = ("Server=localhost;Database=SchoolRecords;Trusted_Connection=True;");
             var sql = @"INSERT INTO SchoolRecords..InstructorTBL(FirstName, LastName, Email) 
                 VALUES(@firstName, @lastName, @email)";
 
-            using (var connection = new SqlConnection(connectionString))
+            using (var connection = new SqlConnection(Connection))
             using (var command = new SqlCommand(sql, connection))
             {
                 command.CommandType = CommandType.Text;
@@ -100,12 +97,11 @@ namespace SchoolRecords.Lib
 
         public Instructor Update(int id, Instructor instructor)
         {
-            var connectionString = ("Server=localhost;Database=SchoolRecords;Trusted_Connection=True;");
             var sql = @"UPDATE SchoolRecords..InstructorTBL 
                 SET FirstName = @firstName, LastName = @lastName, Email = @email
                 WHERE ID = @id";
 
-            using (var connection = new SqlConnection(connectionString))
+            using (var connection = new SqlConnection(Connection))
             using (var command = new SqlCommand(sql, connection))
             {
                 command.CommandType = CommandType.Text;
@@ -126,10 +122,9 @@ namespace SchoolRecords.Lib
 
         public void Remove(int id)
         {
-            var connectionString = ("Server=localhost;Database=SchoolRecords;Trusted_Connection=True;");
             var sql = @"DELETE SchoolRecords..InstructorTBL WHERE ID = @id";
 
-            using (var connection = new SqlConnection(connectionString))
+            using (var connection = new SqlConnection(Connection))
             using (var command = new SqlCommand(sql, connection))
             {
                 command.CommandType = CommandType.Text;

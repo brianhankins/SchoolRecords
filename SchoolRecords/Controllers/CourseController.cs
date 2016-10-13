@@ -2,6 +2,7 @@
 using SchoolRecords.Models;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
@@ -14,21 +15,34 @@ namespace SchoolRecords.Controllers
     [RoutePrefix("api/courses")]
     public class CourseController : ApiController
     {
+        private CourseRepository Courses { get; }
+        public CourseController()
+        {
+            var connectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+            Courses = new CourseRepository(connectionString);
+        }
+
         [HttpGet]
         [Route("")]
         public IEnumerable<Course> GetCourseList()
         {
-            var course = new CourseRepository();
-            var courseList = course.Get();
+            var courseList = Courses.Get();
             return courseList;
+        }
+
+        [HttpGet]
+        [Route("{id}")]
+        public Course GetCourse(string id)
+        {
+            var oneCourse = Courses.Get(id);
+            return oneCourse;
         }
 
         [HttpPost]
         [Route("")]
         public Course AddCourse(Course course)
         {
-            var courses = new CourseRepository();
-            var addCourse = courses.Add(course);
+            var addCourse = Courses.Add(course);
             return course;
         }
         
@@ -36,8 +50,7 @@ namespace SchoolRecords.Controllers
         [Route("{id}")]
         public Course UpdateCourse(int id, Course course)
         {
-            var courses = new CourseRepository();
-            var updatedCourse = courses.Update(id, course);
+            var updatedCourse = Courses.Update(id, course);
             return updatedCourse;
         } 
 
@@ -45,8 +58,7 @@ namespace SchoolRecords.Controllers
         [Route("{id}")]
         public void DeleteCourse(int id, Course course)
         {
-            var courses = new CourseRepository();
-            courses.Remove(id);
+            Courses.Remove(id);
         }
     }
 }

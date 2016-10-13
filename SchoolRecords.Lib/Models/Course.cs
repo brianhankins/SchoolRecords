@@ -10,12 +10,14 @@ namespace SchoolRecords.Models
         public int ID { get; set; }
         public string Name { get; set; }
         public string Hours { get; set; }
+        public Instructor Instructor { get; set; }
 
-        public Course(int id, string name, string hours)
+        public Course(int id, string name, string hours, Instructor instructor)
         {
             ID = id;
             Name = name;
             Hours = hours;
+            Instructor = instructor;
         }
     }
 

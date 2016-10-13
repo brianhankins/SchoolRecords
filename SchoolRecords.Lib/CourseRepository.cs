@@ -11,19 +11,21 @@ namespace SchoolRecords.Lib
 {
     public class CourseRepository
     {
-        public CourseRepository()
+        private string Connection { get; }
+        public CourseRepository(string connection)
         {
-
+            Connection = connection;
         }
 
         public IEnumerable<Course> Get()
         {
             var allcourses = new List<Course>();
 
-            var connectionString = ("Server=localhost;Database=SchoolRecords;Trusted_Connection=True;");
-            var sql = "SELECT Id, CourseName, CourseHours FROM SchoolRecords..CourseListTBL";
+            var sql = @"SELECT T1.ID, T1.CourseName, T1.CreditHours, T1.InstructorID, T3.FirstName, T3.LastName, T3.Email
+                        FROM CourseListTBL T1
+                        JOIN InstructorTBL T3 ON T1.InstructorID = T3.ID";
 
-            using (var connection = new SqlConnection(connectionString))
+            using (var connection = new SqlConnection(Connection))
             using (var command = new SqlCommand(sql, connection))
             {
                 command.CommandType = CommandType.Text;
@@ -34,8 +36,15 @@ namespace SchoolRecords.Lib
                 {
                     var id = (int)reader["Id"];
                     var name = reader["CourseName"].ToString();
-                    var hours = reader["CourseHours"].ToString();
-                    var course = new Course(id, name, hours);
+                    var hours = reader["CreditHours"].ToString();
+                    var teacherId= (int)reader["InstructorID"];
+                    var teacherFirstName = reader["FirstName"].ToString();
+                    var teacherLastName = reader["LastName"].ToString();
+                    var teacherEmail = reader["Email"].ToString();
+
+                    Instructor teacher = new Instructor(teacherId, teacherFirstName, teacherLastName, teacherEmail);
+                    var course = new Course(id, name, hours, teacher);
+
                     allcourses.Add(course);
                 }
                 connection.Close();
@@ -43,18 +52,20 @@ namespace SchoolRecords.Lib
             return allcourses;
         }
 
-        public IEnumerable<Course> Get(Course course)
+        public Course Get(string courseId)
         {
+            var sql = @"SELECT T1.ID, T1.CourseName, T1.CreditHours, T1.InstructorID, T3.FirstName, T3.LastName, T3.Email
+                        FROM CourseListTBL T1
+                        JOIN InstructorTBL T3 ON T1.InstructorID = T3.ID
+                        WHERE T1.ID = @courseId";
 
-            var allCourses = new List<Course>();
-
-            var connectionString = ("Server=localhost;Database=SchoolRecords;Trusted_Connection=True;");
-            var sql = "SELECT Id, CourseName, CourseHours FROM SchoolRecords..CourseListTBL";
-
-            using (var connection = new SqlConnection(connectionString))
+            using (var connection = new SqlConnection(Connection))
             using (var command = new SqlCommand(sql, connection))
             {
                 command.CommandType = CommandType.Text;
+
+                command.Parameters.AddWithValue("courseId", courseId);
+
                 connection.Open();
 
                 var reader = command.ExecuteReader();
@@ -62,22 +73,27 @@ namespace SchoolRecords.Lib
                 {
                     var id = (int)reader["Id"];
                     var name = reader["CourseName"].ToString();
-                    var hours = reader["CourseHours"].ToString();
-                    var singleCourse = new Course(id, name, hours);
-                    allCourses.Add(singleCourse);
+                    var hours = reader["CreditHours"].ToString();
+                    var teacherId = (int)reader["InstructorId"];
+                    var teacherFirstName = reader["FirstName"].ToString();
+                    var teacherLastName = reader["Lastname"].ToString();
+                    var teacherEmail = reader["Email"].ToString();
+
+                    Instructor teacher = new Instructor(teacherId, teacherFirstName, teacherLastName, teacherEmail);
+                    var singleCourse = new Course(id, name, hours, teacher);
+                    return singleCourse;
                 }
                 connection.Close();
             }
-            return allCourses;
+            throw new ArgumentException("Course not found");
         }
 
         public Course Add(Course course)
         {
-            var connectionString = ("Server=localhost;Database=SchoolRecords;Trusted_Connection=True;");
             var sql = @"INSERT INTO SchoolRecords..CourseListTBL(CourseName, CreditHours) 
                 VALUES(@name, @hours)";
 
-            using (var connection = new SqlConnection(connectionString))
+            using (var connection = new SqlConnection(Connection))
             using (var command = new SqlCommand(sql, connection))
             {
                 command.CommandType = CommandType.Text;
@@ -95,12 +111,11 @@ namespace SchoolRecords.Lib
 
         public Course Update(int id, Course course)
         {
-            var connectionString = ("Server=localhost;Database=SchoolRecords;Trusted_Connection=True;");
             var sql = @"UPDATE SchoolRecords..CourseListTBL 
                 SET CourseName = @name, CourseHours = @hours
                 WHERE ID = @id";
 
-            using (var connection = new SqlConnection(connectionString))
+            using (var connection = new SqlConnection(Connection))
             using (var command = new SqlCommand(sql, connection))
             {
                 command.CommandType = CommandType.Text;
@@ -120,10 +135,9 @@ namespace SchoolRecords.Lib
 
         public void Remove(int id)
         {
-            var connectionString = ("Server=localhost;Database=SchoolRecords;Trusted_Connection=True;");
             var sql = @"DELETE SchoolRecords..CourseListTBL WHERE ID = @id";
 
-            using (var connection = new SqlConnection(connectionString))
+            using (var connection = new SqlConnection(Connection))
             using (var command = new SqlCommand(sql, connection))
             {
                 command.CommandType = CommandType.Text;

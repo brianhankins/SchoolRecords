@@ -7,6 +7,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SchoolRecords", "SchoolReco
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SchoolRecords.Lib", "SchoolRecords.Lib\SchoolRecords.Lib.csproj", "{16FF6703-98D0-446C-9666-89119A46DFE8}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{385813AC-E33A-4CC1-B7EB-2DEE45914157}"
+	ProjectSection(SolutionItems) = preProject
+		TODO.md = TODO.md
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SchoolApp", "SchoolApp\SchoolApp.csproj", "{AE94E599-E0BA-4431-854A-2DED45DEE828}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +28,10 @@ Global
 		{16FF6703-98D0-446C-9666-89119A46DFE8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{16FF6703-98D0-446C-9666-89119A46DFE8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{16FF6703-98D0-446C-9666-89119A46DFE8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AE94E599-E0BA-4431-854A-2DED45DEE828}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AE94E599-E0BA-4431-854A-2DED45DEE828}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AE94E599-E0BA-4431-854A-2DED45DEE828}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AE94E599-E0BA-4431-854A-2DED45DEE828}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
