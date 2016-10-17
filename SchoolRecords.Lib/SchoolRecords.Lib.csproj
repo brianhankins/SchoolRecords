@@ -41,6 +41,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CourseRepository.cs" />
+    <Compile Include="LibraryRepository.cs" />
+    <Compile Include="Models\Library.cs" />
     <Compile Include="StudentRepository.cs" />
     <Compile Include="InstructorRepository.cs" />
     <Compile Include="Models\Course.cs" />
