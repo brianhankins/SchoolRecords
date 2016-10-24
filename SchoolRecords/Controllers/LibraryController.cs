@@ -13,20 +13,37 @@ namespace SchoolRecords.Controllers
     [RoutePrefix("api/Library")]
     public class LibraryController : ApiController
     {
-        private LibraryRepository Library { get; }
+        private LibraryRepository LibraryBooks { get; }
         public LibraryController()
         {
             var connectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
-            Library = new LibraryRepository(connectionString);
+            LibraryBooks = new LibraryRepository(connectionString);
         }
 
         [HttpGet]
         [Route("")]
         public IEnumerable<Library> GetBookList()
         {
-            var bookList = Library.Get();
-            return bookList; 
+            var bookList = LibraryBooks.Get();
+            return bookList;
         }
+
+        [HttpPost]
+        [Route("{id}")]
+        public Library GetBook(string id)
+        {
+            var oneBook = LibraryBooks.Get(id);
+            return oneBook;
+        }
+
+        [HttpPost]
+        [Route("")]
+        public Library AddBook(Library book)
+        {
+            var addBook = LibraryBooks.Add(book);
+            return addBook;
+        }
+
 
     }
      
