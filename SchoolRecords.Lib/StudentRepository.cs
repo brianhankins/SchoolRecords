@@ -79,7 +79,7 @@ namespace SchoolRecords.Lib
         {
             var studentCourses = new List<Course>();
 
-            var sql = @"SELECT T2.ID, T2.CourseName, T2.CreditHours, T2.InstructorID, T3.LastName, T3.FirstName, T3.Email 
+            var sql = @"SELECT T2.ID, T2.CourseName, T2.CreditHours, T2.RoomNumber, T2.InstructorID, T3.LastName, T3.FirstName, T3.Email 
                         FROM StudentCourseXrefTBL T1
                         JOIN CourseListTBL T2 ON T1.CourseID = T2.ID
                         JOIN InstructorTBL T3 ON T2.InstructorID = T3.ID
@@ -103,10 +103,11 @@ namespace SchoolRecords.Lib
                     var email = reader["Email"].ToString();
                     var courseName = reader["CourseName"].ToString();
                     var creditHours = reader["CreditHours"].ToString();
+                    var roomNumber = (int)reader["RoomNumber"];
 
                     
                     var teacher = new Instructor(instructorId, firstName, lastName, email);
-                    var course = new Course(id, courseName, creditHours, teacher);
+                    var course = new Course(id, courseName, creditHours, roomNumber, teacher);
 
                     studentCourses.Add(course);
                 }
