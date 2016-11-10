@@ -10,10 +10,10 @@ using System.Threading.Tasks;
 
 namespace SchoolRecords.Lib
 {
-    public class LibraryRepository
+    public class BookRepository
     {
         private string Connection { get; }
-        public LibraryRepository(string connection)
+        public BookRepository(string connection)
         {
             Connection = connection;
         }
@@ -116,6 +116,47 @@ namespace SchoolRecords.Lib
             return book;
         }
         
-        
+        public Book Update(int id, Book book)
+        {
+            var sql = @"UPDATE SchoolRecords..LibraryTBL 
+                SET BookName = @bookName, ISBN = @isbn, CheckedOut = @checkedOut, ReturnDate = @returnDate, StudentID = @studentId
+                WHERE ID = @id";
+
+            using (var connection = new SqlConnection(Connection))
+            using (var command = new SqlCommand(sql, connection))
+            {
+                command.CommandType = CommandType.Text;
+                connection.Open();
+
+                command.Parameters.AddWithValue("bookName", book.BookName);
+                command.Parameters.AddWithValue("isbn", book.ISBN);
+                command.Parameters.AddWithValue("checkedOut", book.CheckedOut);
+                command.Parameters.AddWithValue("returnDate", book.ReturnDate);
+                command.Parameters.AddWithValue("studentId", book.StudentId);
+
+                command.ExecuteNonQuery();
+
+                connection.Close();
+            }
+            return book;
+        }
+
+        public void Remove(int id)
+        {
+            var sql = @"DELETE SchoolRecords..LibraryTBL WHERE ID = @id";
+
+            using (var connection = new SqlConnection(Connection))
+            using (var command = new SqlCommand(sql, connection))
+            {
+                command.CommandType = CommandType.Text;
+                connection.Open();
+
+                command.Parameters.AddWithValue("id", id);
+
+                command.ExecuteNonQuery();
+
+                connection.Close();
+            }
+        }
     }
 }

@@ -13,11 +13,11 @@ namespace SchoolRecords.Controllers
     [RoutePrefix("api/Library")]
     public class BookController : ApiController
     {
-        private LibraryRepository LibraryBooks { get; }
+        private BookRepository LibraryBooks { get; }
         public BookController()
         {
             var connectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
-            LibraryBooks = new LibraryRepository(connectionString);
+            LibraryBooks = new BookRepository(connectionString);
         }
 
         [HttpGet]
@@ -44,7 +44,20 @@ namespace SchoolRecords.Controllers
             return addBook;
         }
 
+        [HttpPut]
+        [Route("{id}")]
+        public Book UpdateBook(int id, Book book)
+        {
+            var updateBook = LibraryBooks.Update(id, book);
+            return updateBook;
+        }
 
+        [HttpDelete]
+        [Route("{id}")]
+        public void RemoveBook(int id, Book book)
+        {
+            LibraryBooks.Remove(id);
+        }
     }
      
 }
