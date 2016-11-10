@@ -18,9 +18,9 @@ namespace SchoolRecords.Lib
             Connection = connection;
         }
 
-        public IEnumerable<Library> Get()
+        public IEnumerable<Book> Get()
         {
-            var allLibraryBooks = new List<Library>();
+            var allLibraryBooks = new List<Book>();
 
             var sql = "SELECT ID, BookName, ISBN, CheckedOut FROM SchoolRecords..LibraryTBL";
 
@@ -39,7 +39,7 @@ namespace SchoolRecords.Lib
                     var isbn = reader["ISBN"].ToString();
                     var checkedOut = (bool)reader["CheckedOut"];
 
-                    var libraryBook = new Library(bookName, isbn, checkedOut);
+                    var libraryBook = new Book(bookName, isbn, checkedOut);
 
                     allLibraryBooks.Add(libraryBook);
 
@@ -49,12 +49,12 @@ namespace SchoolRecords.Lib
             return allLibraryBooks;
         }
 
-        public Library Get(string studentId)
+        public Book Get(string studentId)
         {
             var sql = @"SELECT T1.ID, T1.BookName, T1.ISBN, T1.CheckedOut, T1.ReturnDate, T1. StudentID, 
                         T3.FirstName, T3.LastName, T3.Email
                       FROM LibraryTBL T1
-                      JOIN StudentTBL T3 ON T1.StudentID = T3.ID
+                      LEFT JOIN StudentTBL T3 ON T1.StudentID = T3.ID
                       WHERE T1.ID = @studentId";
                       
 
@@ -81,8 +81,8 @@ namespace SchoolRecords.Lib
                     var studentLastName = reader["LastName"].ToString();
                     var studentEmail = reader["Email"].ToString();
 
-                    Student student = new Student(studentNumber, studentFirstName, studentLastName, studentEmail);
-                    var libarybook = new Library(bookName, isbn, checkedOut, returnDate, student);
+                    var student = new Student(studentNumber, studentFirstName, studentLastName, studentEmail);
+                    var libarybook = new Book(bookName, isbn, checkedOut, returnDate, student);
 
                     return libarybook;
 
@@ -92,7 +92,7 @@ namespace SchoolRecords.Lib
             throw new ArgumentException("Student not found");
         }
 
-        public Library Add(Library book)
+        public Book Add(Book book)
         {
             var sql = @"INSERT INTO SchoolRecords..LibraryTBL(BookName, ISBN, CheckedOut, ReturnDate, StudentID)
                         VALUES(@bookName, @isbn, @checkedOut, returnDate, studentId)";

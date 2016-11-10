@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace SchoolRecords.Lib.Models
 {
-    public class Library
+    public class Book
     {
         public string BookName { get; set; }
         public string ISBN { get; set; }
@@ -15,14 +15,14 @@ namespace SchoolRecords.Lib.Models
         public DateTime ReturnDate { get; set; }
         public Student StudentId { get; set; }
 
-        public Library(string bookName, string isbn, bool checkedOut)
+        public Book(string bookName, string isbn, bool checkedOut)
         {
             BookName = bookName;
             ISBN = isbn;
             CheckedOut = checkedOut;
         }
 
-        public Library(string bookName, string isbn, bool checkedOut, DateTime returnDate, Student student)
+        public Book(string bookName, string isbn, bool checkedOut, DateTime returnDate, Student student)
         {
             BookName = bookName;
             ISBN = isbn;

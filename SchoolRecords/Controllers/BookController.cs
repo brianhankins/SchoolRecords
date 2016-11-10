@@ -11,10 +11,10 @@ using System.Web.Http;
 namespace SchoolRecords.Controllers
 {
     [RoutePrefix("api/Library")]
-    public class LibraryController : ApiController
+    public class BookController : ApiController
     {
         private LibraryRepository LibraryBooks { get; }
-        public LibraryController()
+        public BookController()
         {
             var connectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
             LibraryBooks = new LibraryRepository(connectionString);
@@ -22,7 +22,7 @@ namespace SchoolRecords.Controllers
 
         [HttpGet]
         [Route("")]
-        public IEnumerable<Library> GetBookList()
+        public IEnumerable<Book> GetBookList()
         {
             var bookList = LibraryBooks.Get();
             return bookList;
@@ -30,7 +30,7 @@ namespace SchoolRecords.Controllers
 
         [HttpPost]
         [Route("{id}")]
-        public Library GetBook(string id)
+        public Book GetBook(string id)
         {
             var oneBook = LibraryBooks.Get(id);
             return oneBook;
@@ -38,7 +38,7 @@ namespace SchoolRecords.Controllers
 
         [HttpPost]
         [Route("")]
-        public Library AddBook(Library book)
+        public Book AddBook(Book book)
         {
             var addBook = LibraryBooks.Add(book);
             return addBook;
