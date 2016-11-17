@@ -9,6 +9,8 @@ namespace SchoolRecords.Lib.Models
 {
     public class Book
     {
+        //Author, Course, No ReturnDate, No StudentID, No CheckedOut, 
+
         public string BookName { get; set; }
         public string ISBN { get; set; }
         public bool CheckedOut { get; set; }

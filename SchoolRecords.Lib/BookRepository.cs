@@ -22,7 +22,10 @@ namespace SchoolRecords.Lib
         {
             var allLibraryBooks = new List<Book>();
 
-            var sql = "SELECT ID, BookName, ISBN, CheckedOut FROM SchoolRecords..LibraryTBL";
+            var sql = @"SELECT T1.ID, T1.BookName, T1.ISBN, T1.CheckedOut, T1.ReturnDate, T1.StudentID, 
+                            T2.ID, T2.FirstName, T2.LastName, T2.Email
+                    FROM LibraryTBL T1
+                    LEFT JOIN StudentTBL T2 on T1.StudentID = T2.ID";
 
             using (var connection = new SqlConnection(Connection))
             using (var command = new SqlCommand(sql, connection))
@@ -38,8 +41,14 @@ namespace SchoolRecords.Lib
                     var bookName = reader["BookName"].ToString();
                     var isbn = reader["ISBN"].ToString();
                     var checkedOut = (bool)reader["CheckedOut"];
+                    var returnDate = (DateTime)reader["ReturnDate"];
+                    var studentId = (int)reader["StudentID"];
+                    var firstName = reader["FirstName"].ToString();
+                    var lastName = reader["LastName"].ToString();
+                    var email = reader["Email"].ToString();
 
-                    var libraryBook = new Book(bookName, isbn, checkedOut);
+                    var student = new Student(id, firstName, lastName, email);
+                    var libraryBook = new Book(bookName, isbn, checkedOut, returnDate, student);
 
                     allLibraryBooks.Add(libraryBook);
 
@@ -51,7 +60,7 @@ namespace SchoolRecords.Lib
 
         public Book Get(string studentId)
         {
-            var sql = @"SELECT T1.ID, T1.BookName, T1.ISBN, T1.CheckedOut, T1.ReturnDate, T1. StudentID, 
+            var sql = @"SELECT T1.ID, T1.BookName, T1.ISBN, T1.CheckedOut, T1.ReturnDate, T1.StudentID, 
                         T3.FirstName, T3.LastName, T3.Email
                       FROM LibraryTBL T1
                       LEFT JOIN StudentTBL T3 ON T1.StudentID = T3.ID
